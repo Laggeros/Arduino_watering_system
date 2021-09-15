@@ -19,8 +19,7 @@ void setup(){
   if (!bme.begin(0x76)) {
     Serial.println("Could not find a valid BME280 sensor, check wiring!");
     while (1);
-  }
-  
+  } 
 }
 
 void loop() {
@@ -68,12 +67,12 @@ int BME(){
     lcd.setCursor(0,1);lcd.print("T:");lcd.print(bme.readTemperature()); lcd.print(" ");
 
     Serial.print(F("Pressure = "));
-    Serial.print(bme.readPressure()/100); //displaying the Pressure in hPa, you can change the unit
+    Serial.print(bme.readPressure()/100);
     Serial.println(" hPa");
 
     Serial.print(F("Approx altitude = "));
-    Serial.print(bme.readAltitude(1019.66)); //The "1019.66" is the pressure(hPa) at sea level in day in your region
-    Serial.println(" m");                    //If you don't know it, modify it until you get your current altitude
+    Serial.print(bme.readAltitude(1019.66)); 
+    Serial.println(" m");
 
     Serial.print(F("Humidity = "));
     Serial.print(bme.readHumidity());
