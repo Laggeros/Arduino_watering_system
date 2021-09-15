@@ -19,5 +19,5 @@ void loop() {
    readSoilHumidity();
    BME();
 
- delay(30000); 
+ delay(3000); 
 }
