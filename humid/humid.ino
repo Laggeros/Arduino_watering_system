@@ -76,7 +76,7 @@ int BME(){
     Serial.println(" m");                    //If you don't know it, modify it until you get your current altitude
 
     Serial.print(F("Humidity = "));
-    Serial.print(bme.readHumidity()); //The "1019.66" is the pressure(hPa) at sea level in day in your region
+    Serial.print(bme.readHumidity());
     Serial.println(" %");
     lcd.print("H:"); lcd.print(bme.readHumidity()); lcd.print("%"); 
 
