@@ -1,7 +1,5 @@
 #include <LiquidCrystal_I2C.h>
 LiquidCrystal_I2C lcd(0x27,16,2);
-#include <Adafruit_BME280.h>
-Adafruit_BME280 bme;
 #include "BME.h"
 #include "readSoilHumidity.h"
 
@@ -18,11 +16,8 @@ void setup(){
 }
 
 void loop() {
- readSoilHumidity();
-
-  if (bme.begin(0x76)) {
+   readSoilHumidity();
    BME();
-  }
-  
+
  delay(30000); 
 }

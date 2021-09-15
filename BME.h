@@ -1,3 +1,6 @@
+#include <Adafruit_BME280.h>
+Adafruit_BME280 bme;
+
 int BME(){
   Serial.print(F("Temperature = "));
     Serial.print(bme.readTemperature());
