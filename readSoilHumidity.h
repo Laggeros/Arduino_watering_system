@@ -3,7 +3,6 @@
 
 int sensorValue = 0; 
 
-
 int readSoilHumidity(){
   for (int i = 0; i < 10; i++) { 
     sensorValue = sensorValue + analogRead(SensorPin); 
@@ -13,6 +12,7 @@ int readSoilHumidity(){
  sensorValue = sensorValue/10; 
  Serial.println(sensorValue);
 
+ lcd.clear();
  lcd.print("Soil humid:"); 
  lcd.setCursor(11,0);
  lcd.print("    ");
@@ -20,5 +20,6 @@ int readSoilHumidity(){
  lcd.print(convertToPercent(sensorValue)); 
  lcd.print("%");
  
+ return convertToPercent(sensorValue);
  sensorValue = 0;
 }
