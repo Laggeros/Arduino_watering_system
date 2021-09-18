@@ -8,9 +8,9 @@ LiquidCrystal_I2C lcd(0x27,16,2);
 #define beeper 6
 
 int error = 0;
-
 int humidSensor;
-int lastHumidSensor = 100;
+int lastHumidSensor;
+void(* resetFunc) (void) = 0;
 
 void setup(){
   Serial.begin(9600); 
@@ -44,7 +44,8 @@ void setup(){
   lcd.print("level: ");
   lcd.setCursor(6,1);
   lcd.print(humidityLevel); lcd.print("%");
-  counter = 50;
+  counter = 50; //Default humidity level
+  
   while(humiditySelected == false){
     int previousCounter = counter;
     select("humid");
@@ -56,7 +57,14 @@ void setup(){
       lcd.setCursor(6,1);
       lcd.print(counter);lcd.print("%");
     }
+    if(millis() > 300000){
+      beep(0.5);
+      beep(0.5);
+      beep(0.5);
+      resetFunc();
+    }
   }
+  
   delay(500);
   Serial.println("Select interval:");
   lcd.clear();
@@ -65,10 +73,11 @@ void setup(){
   lcd.print("interval:");
   lcd.setCursor(9,1);
   lcd.print(checkInterval); lcd.print("h");
-  counter = 1;
+  counter = 1; //Default interval
+  
   while(intervalSelected == false){
     int previousInterval = counter;
-      select("interval");
+    select("interval");
     if(counter != previousInterval){
       lcd.setCursor(12,1);
       lcd.print(" ");
@@ -78,8 +87,10 @@ void setup(){
       lcd.print(counter);lcd.print("h");
     }
   }
+  
   detachInterrupt(digitalPinToInterrupt(inputCLK));
   detachInterrupt(digitalPinToInterrupt(inputDT));
+  
   Serial.print("Humidity level: "); Serial.print(humidityLevel); Serial.println("%");
   lcd.clear();
   lcd.print("Beggining to");
@@ -98,30 +109,29 @@ void loop() {
     beep(0.5);
     beep(0.5);
     beep(0.5);
-
-    delay(2000);
-  //delay(3600000);
+    delay(3600000);
   }
   else{
     humidSensor = readSoilHumidity();
-  if(humidSensor < lastHumidSensor && checkInterval == 1){
-    Serial.println("Check wiring or tube!");
-    lcd.setCursor(0,0);
-    lcd.print("Check wiring");
-    lcd.setCursor(0,1);
-    lcd.print("or tube!");
-    beep(0.5);
-    beep(0.5);
-    beep(0.5);
-    error = 1;
-    lastHumidSensor = 0;
-  }
+    if(humidSensor < lastHumidSensor && checkInterval == 1){
+      Serial.println("Check wiring or tube!");
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Check wiring");
+      lcd.setCursor(0,1);
+      lcd.print("or tube!");
+      beep(0.5);
+      beep(0.5);
+      beep(0.5);
+      error = 1;
+      lastHumidSensor = 0;
+    }
   else{
     if(humidSensor < humidityLevel){
       runPump(outputPump, 2);
-    beep(1);
     }
   }
+  
   delay(2000);
   Serial.println("Idle...");Serial.println(" ");
   lcd.clear();
