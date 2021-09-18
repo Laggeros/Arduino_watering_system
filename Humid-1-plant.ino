@@ -2,15 +2,10 @@
 LiquidCrystal_I2C lcd(0x27,16,2);
 #include "readSoilHumidity.h"
 #include "select.h";
+#include "runPump.h";
 
 #define outputPump 5
 #define beeper 6
-
-
-
-
-
-
 
 int error = 0;
 
@@ -95,19 +90,22 @@ void setup(){
 }
 
 void loop() {
+  lcd.clear();
+  delay(50);
+  lcd.setBacklight(HIGH);
   if(error == 1){
+    lcd.print("Error...");
     beep(0.5);
     beep(0.5);
     beep(0.5);
-    //delay(3600000);
+
+    delay(2000);
+  //delay(3600000);
   }
   else{
-    lcd.setBacklight(HIGH);
-    delay(1000);
     humidSensor = readSoilHumidity();
   if(humidSensor < lastHumidSensor && checkInterval == 1){
     Serial.println("Check wiring or tube!");
-    lcd.clear();
     lcd.setCursor(0,0);
     lcd.print("Check wiring");
     lcd.setCursor(0,1);
@@ -124,6 +122,7 @@ void loop() {
     beep(1);
     }
   }
+  delay(2000);
   Serial.println("Idle...");Serial.println(" ");
   lcd.clear();
   lcd.print("Idle...");
@@ -132,24 +131,6 @@ void loop() {
   //delay(checkInterval * 3600000); 
   delay(3000);
   }
-}
-
-void runPump(int pump, int time){
-  int runTime = ((time*1000)/4);
-  Serial.println("Watering...");
-  lcd.setCursor(0,1);
-  lcd.print("Watering");
-  digitalWrite(pump, HIGH);
-  delay(runTime);
-  lcd.print(".");
-  delay(runTime);
-  lcd.print(".");
-  delay(runTime);
-  lcd.print(".");
-  delay(runTime);
-  digitalWrite(pump, LOW);
-  lcd.setCursor(0,1);
-  lcd.print("           ");
 }
 
 void beep(int ms){
