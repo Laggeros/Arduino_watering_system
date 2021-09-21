@@ -4,7 +4,7 @@
 int sensorValue = 0; 
 int percentSensorValue;
 
-int readSoilHumidity(){
+int readSoilMoisture(){
   for (int i = 0; i < 10; i++) { 
     sensorValue = sensorValue + analogRead(SensorPin); 
     delay(3); 

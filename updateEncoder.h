@@ -5,7 +5,7 @@ int currentStateCLK;
 int previousStateCLK;
 int counter; 
 
-void updateEncoderHumid(){
+void updateEncoderMoisture(){
   currentStateCLK = digitalRead(inputCLK);
   if (currentStateCLK != previousStateCLK && currentStateCLK == 1){ 
      if (digitalRead(inputDT) != currentStateCLK) { 

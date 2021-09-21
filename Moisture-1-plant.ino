@@ -1,6 +1,6 @@
 #include <LiquidCrystal_I2C.h>
 LiquidCrystal_I2C lcd(0x27,16,2);
-#include "readSoilHumidity.h"
+#include "readSoilMoisture.h"
 #include "select.h";
 #include "runPump.h";
 
@@ -8,8 +8,8 @@ LiquidCrystal_I2C lcd(0x27,16,2);
 #define beeper 6
 
 int error = 0;
-int humidSensor;
-int lastHumidSensor;
+int moistureSensor;
+int lastMoistureReading;
 void(* resetFunc) (void) = 0;
 
 void setup(){
@@ -37,18 +37,18 @@ void setup(){
   lcd.print(".");
   delay(500);
 
-  Serial.println("Select humidity level:");
+  Serial.println("Select moisture level:");
   lcd.clear();
-  lcd.print("Select humidity");
+  lcd.print("Select moisture");
   lcd.setCursor(0,1);
   lcd.print("level: ");
   lcd.setCursor(6,1);
-  lcd.print(humidityLevel); lcd.print("%");
-  counter = 50; //Default humidity level
+  lcd.print(moistureLevel); lcd.print("%");
+  counter = 50; //Default moisture level
   
-  while(humiditySelected == false){
+  while(moistureSelected == false){
     int previousCounter = counter;
-    select("humid");
+    select("moisture");
     if(counter != previousCounter){
       lcd.setCursor(9,1);
       lcd.print(" ");
@@ -91,7 +91,7 @@ void setup(){
   detachInterrupt(digitalPinToInterrupt(inputCLK));
   detachInterrupt(digitalPinToInterrupt(inputDT));
   
-  Serial.print("Humidity level: "); Serial.print(humidityLevel); Serial.println("%");
+  Serial.print("Moisture level: "); Serial.print(moistureLevel); Serial.println("%");
   lcd.clear();
   lcd.print("Beggining to");
   lcd.setCursor(0,1);
@@ -112,8 +112,8 @@ void loop() {
     delay(3600000);
   }
   else{
-    humidSensor = readSoilHumidity();
-    if(humidSensor < lastHumidSensor && checkInterval == 1){
+    moistureSensor = readSoilMoisture();
+    if(moistureSensor < lastMoistureReading && checkInterval == 1){
       Serial.println("Check wiring or tube!");
       lcd.clear();
       lcd.setCursor(0,0);
@@ -124,10 +124,10 @@ void loop() {
       beep(0.5);
       beep(0.5);
       error = 1;
-      lastHumidSensor = 0;
+      lastMoistureReading = 0;
     }
   else{
-    if(humidSensor < humidityLevel){
+    if(moistureSensor < moistureLevel){
       runPump(outputPump, 2);
     }
   }
