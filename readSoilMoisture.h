@@ -17,8 +17,8 @@ int readSoilMoisture(){
  percentSensorValue = convertToPercent(sensorValue);
  Serial.print(percentSensorValue);Serial.println("%");
 
- lcd.clear();
- lcd.print("Soil humid:"); 
+ lcd.clear(); 
+ lcd.print("Soil moist:");
  lcd.setCursor(11,0);
  lcd.print("    ");
  lcd.setCursor(11,0);
