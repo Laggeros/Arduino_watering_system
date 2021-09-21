@@ -13,6 +13,14 @@ int lastHumidSensor;
 void(* resetFunc) (void) = 0;
 
 void setup(){
+  pinMode (inputCLK,INPUT);
+  pinMode (inputDT,INPUT);
+  pinMode (inputBT, INPUT_PULLUP);
+  pinMode (outputPump, OUTPUT);
+  pinMode (beeper, OUTPUT);
+
+  previousStateCLK = digitalRead(inputCLK);
+  
   Serial.begin(9600); 
   lcd.init();                  
   lcd.backlight();
@@ -28,14 +36,6 @@ void setup(){
   delay(500);
   lcd.print(".");
   delay(500);
-
-  pinMode (inputCLK,INPUT);
-  pinMode (inputDT,INPUT);
-  pinMode (inputBT, INPUT_PULLUP);
-  pinMode (outputPump, OUTPUT);
-  pinMode (beeper, OUTPUT);
-
-  previousStateCLK = digitalRead(inputCLK);
 
   Serial.println("Select humidity level:");
   lcd.clear();
