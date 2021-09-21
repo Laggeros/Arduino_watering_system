@@ -1,6 +1,6 @@
 # Moisture-1-plant
 
-Plant moisture for one plant
+Moisture sensor for one plant with watering system
 
 Parts:
 1. Arduino nano
