@@ -1,6 +1,6 @@
-# Humid-1-plant
+# Moisture-1-plant
 
-Plant humid  for one plant
+Plant moisture for one plant
 
 Parts:
 1. Arduino nano
@@ -8,7 +8,7 @@ Parts:
 3. LCD 16x2
 4. Beeper
 5. Encoder
-6. Soil humid capacity sensor
+6. Soil moisture capacity sensor
 7. Water pump
 8. 12v - 5v Step-down circuit
 9. Relay board
