@@ -17,10 +17,11 @@ void setup(){
   pinMode (inputDT,INPUT);
   pinMode (inputBT, INPUT_PULLUP);
   pinMode (outputPump, OUTPUT);
+  digitalWrite(outputPump, HIGH);
   pinMode (beeper, OUTPUT);
 
   previousStateCLK = digitalRead(inputCLK);
-  
+
   Serial.begin(9600); 
   lcd.init();                  
   lcd.backlight();
@@ -106,9 +107,11 @@ void loop() {
   lcd.setBacklight(HIGH);
   if(error == 1){
     lcd.print("Error...");
-    beep(0.5);
-    beep(0.5);
-    beep(0.5);
+    beep(1);
+    delay(1000);
+    beep(1);
+    delay(1000);
+    beep(1);
     delay(3600000);
   }
   else{
@@ -138,8 +141,8 @@ void loop() {
   lcd.print("Idle...");
   delay(2000);
   lcd.setBacklight(LOW);
-  //delay(checkInterval * 3600000); 
-  delay(3000);
+  delay(checkInterval * 3600000); 
+  //delay(3000);
   }
 }
 
@@ -147,4 +150,5 @@ void beep(int ms){
 //  digitalWrite(beeper, HIGH);
 //  delay(ms *1000);
 //  digitalWrite(beeper, LOW);
+//  delay(ms *1000);
 }

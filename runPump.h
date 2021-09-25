@@ -3,15 +3,15 @@ void runPump(int pump, int time){
   Serial.println("Watering...");
   lcd.setCursor(0,1);
   lcd.print("Watering");
-  digitalWrite(pump, HIGH);
-  delay(runTime);
-  lcd.print(".");
-  delay(runTime);
-  lcd.print(".");
-  delay(runTime);
-  lcd.print(".");
-  delay(runTime);
   digitalWrite(pump, LOW);
+  delay(runTime);
+  lcd.print(".");
+  delay(runTime);
+  lcd.print(".");
+  delay(runTime);
+  lcd.print(".");
+  delay(runTime);
+  digitalWrite(pump, HIGH);
   lcd.setCursor(0,1);
   lcd.print("           ");
 }

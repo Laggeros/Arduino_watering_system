@@ -1,5 +1,5 @@
-const int moistSoilValue = 520; //Calibrate for 100% moist soil 
-const int drySoilValue = 176; //Calibrate for 0% moist soil 
+const int moistSoilValue = 340; //Calibrate for 100% moist soil 
+const int drySoilValue = 93; //Calibrate for 0% moist soil 
 
 int convertToPercent(int value){
   int percentValue = 0;
