@@ -129,20 +129,20 @@ void loop() {
       error = 1;
       lastMoistureReading = 0;
     }
-  else{
-    if(moistureSensor < moistureLevel){
-      runPump(outputPump, 2);
+    else{
+      if(moistureSensor < moistureLevel){
+        runPump(outputPump, 2);
+      } 
     }
-  }
   
-  delay(2000);
-  Serial.println("Idle...");Serial.println(" ");
-  lcd.clear();
-  lcd.print("Idle...");
-  delay(2000);
-  lcd.setBacklight(LOW);
-  delay(checkInterval * 3600000); 
-  //delay(3000);
+    delay(2000);
+    Serial.println("Idle...");Serial.println(" ");
+    lcd.clear();
+    lcd.print("Idle...");
+    delay(2000);
+    lcd.setBacklight(LOW);
+    delay(checkInterval * 3600000); 
+    //delay(3000);
   }
 }
 
