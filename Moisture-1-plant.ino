@@ -46,6 +46,8 @@ void setup(){
   lcd.setCursor(6,1);
   lcd.print(moistureLevel); lcd.print("%");
   counter = 50; //Default moisture level
+
+  //Settings 
   
   while(moistureSelected == false){
     int previousCounter = counter;
@@ -91,6 +93,8 @@ void setup(){
   
   detachInterrupt(digitalPinToInterrupt(inputCLK));
   detachInterrupt(digitalPinToInterrupt(inputDT));
+
+  //End of settings
   
   Serial.print("Moisture level: "); Serial.print(moistureLevel); Serial.println("%");
   lcd.clear();
@@ -105,7 +109,8 @@ void loop() {
   lcd.clear();
   delay(50);
   lcd.setBacklight(HIGH);
-  if(error == 1){
+
+  if(error == 1){ //Error interupt
     lcd.print("Error...");
     beep(1);
     delay(1000);
@@ -116,6 +121,9 @@ void loop() {
   }
   else{
     moistureSensor = readSoilMoisture();
+
+    //This section checks if sensor readout is not lover that a reading from 1h ago
+    
     if(moistureSensor < lastMoistureReading && checkInterval == 1){
       Serial.println("Check wiring or tube!");
       lcd.clear();

@@ -4,6 +4,8 @@
 int sensorValue = 0; 
 int percentSensorValue;
 
+//Averaging 10 readings to reduce error possibility
+
 int readSoilMoisture(){
   for (int i = 0; i < 10; i++) { 
     sensorValue = sensorValue + analogRead(SensorPin); 
