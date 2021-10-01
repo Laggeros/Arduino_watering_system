@@ -34,12 +34,12 @@
 
 //Settings
 
-const bool debug = true; //Turns off moisture and interval selection and sets cycle time to 3 sec. 
+const bool debug = false; //Turns off moisture and interval selection and sets cycle time to 3 sec. 
 const bool beeperOn = true;
 const bool pumpOn = true;
 const bool valvesNC = false;
-const int numberOfSensors = 3;
-const int timeToRunThePump = 1;
+const int numberOfSensors = 4;
+const int timeToRunThePump = 2;
 const int moistureIncrement = 5;
 
 #include <LiquidCrystal_I2C.h>
@@ -232,7 +232,7 @@ void loop() {
   lcd.setBacklight(LOW);
   cycleCounter++;
   if(debug == false) delay(checkInterval * 3600000); 
-  else delay(500);
+  else delay(3000);
   }
 }
 
