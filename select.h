@@ -6,11 +6,21 @@
 
 unsigned long lastButtonPress = 0;
 int moistureLevel = 50;
-bool moistureSelected = false;
 int checkInterval = 1;
-bool intervalSelected = false;
+bool moistureSelected;
+bool intervalSelected;
+
 
 void select(String type){
+  if(debug == true){
+    moistureSelected = true;
+    intervalSelected = true;
+  }
+  else{
+    moistureSelected = false;
+    intervalSelected = false;
+  }
+
   int btnState = digitalRead(inputBT);
   if(type == "moisture"){
       attachInterrupt(digitalPinToInterrupt(inputCLK), updateEncoderMoisture, CHANGE);

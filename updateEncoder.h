@@ -9,10 +9,10 @@ void updateEncoderMoisture(){
   currentStateCLK = digitalRead(inputCLK);
   if (currentStateCLK != previousStateCLK && currentStateCLK == 1){ 
      if (digitalRead(inputDT) != currentStateCLK) { 
-      counter = counter -5;
+      counter = counter - moistureIncrement;
      } 
      else {
-      counter = counter +5;
+      counter = counter + moistureIncrement;
      }
      if(counter > 100){counter = 100;}
      if(counter < 0) {counter = 0;} 
