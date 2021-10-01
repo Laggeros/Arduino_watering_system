@@ -2,6 +2,8 @@
 
 Moisture sensor for one plant with watering system
 
+More instructions inside main file
+
 Parts:
 1. Arduino nano
 2. Arduino nano shield
