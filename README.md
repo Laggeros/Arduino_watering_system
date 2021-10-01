@@ -1,4 +1,4 @@
-# Moisture-1-plant
+# Arduno_watering_system
 
 Moisture sensor for one plant with watering system
 
