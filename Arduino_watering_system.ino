@@ -8,7 +8,6 @@
  *  seconds to water the soil. When all the pots are checked and watered
  *  the device goes into sleep mode for time specified in the beggining. 
  *  
- *  
  *  Settings:
  *  
  *  1. Select number of sensors in your project (max is 7 for arduino nano).
@@ -18,11 +17,14 @@
  *  5. Select digital outputs for valves in triggerValve file. 
  *  6. Change digital inputs for encoder and button if needed in settings of this file. 
  *  
- *  WARNING: The code is witten for LOW triggered relay boards.  
+ *  WARNING: 
+ *  The code is witten for LOW triggered relay boards.  
+ *  If you use normalny closed valves change that in options.
+ *  Arduino nano will handle 3 valves when LCD is connected to it so
+ *  try to power everything with external power supply. 
  *  
  *  Pinout is default for Arduino nano
  *  
- *   
  *  Author: Michał Warchoł
  *  https://github.com/Laggeros
  *  lagger.exe@gmail.com
@@ -32,11 +34,12 @@
 
 //Settings
 
-const bool debug = false; //Turns off moisture and interval selection and sets cycle time to 3 sec. 
+const bool debug = true; //Turns off moisture and interval selection and sets cycle time to 3 sec. 
 const bool beeperOn = true;
 const bool pumpOn = true;
-const int numberOfSensors = 4;
-const int timeToRunThePump = 1.5;
+const bool valvesNC = false;
+const int numberOfSensors = 3;
+const int timeToRunThePump = 1;
 const int moistureIncrement = 5;
 
 #include <LiquidCrystal_I2C.h>
@@ -55,6 +58,7 @@ LiquidCrystal_I2C lcd(0x27,16,2); //Size of LCD screen
 #include "runPump.h";
 #include "triggerValve.h";
 
+int cycleCounter;
 int error = 0;
 int moistureSensor;
 int lastMoistureSensor[numberOfSensors];
@@ -62,9 +66,10 @@ void(* resetFunc) (void) = 0;
 
 void setup(){
   if(numberOfSensors > 1){
-    for(int i = 0; i < sizeof(valves); i++){
+    for(int i = 0; i < numberOfSensors; i++){
       pinMode(valves[i], OUTPUT);
-      digitalWrite(valves[i], LOW);
+      //Closes all valves when using normally openeded ones
+      if(valvesNC == false) digitalWrite(valves[i], LOW); 
       delay(50);
     }
   }
@@ -163,10 +168,15 @@ void setup(){
 }
 
 void loop() {
+  Serial.println();Serial.print("Cycle number: ");Serial.println(cycleCounter);Serial.println();
   Serial.println("Waking up from idle");
   lcd.clear();
   delay(50);
   lcd.setBacklight(HIGH);
+  delay(500);
+
+  if(valvesNC == false) triggerValves("close");
+  
   if(error == 1 && debug == false){ //Error hanlder
     Serial.println("Error");
     lcd.print("Error...");
@@ -198,7 +208,7 @@ void loop() {
         lastMoistureSensor[i-1] = 0;
       }
     else{
-      if(moistureSensor < moistureLevel){
+      if(moistureSensor < moistureLevel || debug == true){
         if(numberOfSensors > 1){
           triggerValve(i, true);
           runPump(outputPump, timeToRunThePump);
@@ -216,9 +226,13 @@ void loop() {
   lcd.clear();
   lcd.print("Idle...");
   delay(2000);
+
+  if(valvesNC == false) triggerValves("open");
+  
   lcd.setBacklight(LOW);
+  cycleCounter++;
   if(debug == false) delay(checkInterval * 3600000); 
-  else delay(3000);
+  else delay(500);
   }
 }
 
@@ -227,5 +241,13 @@ void beep(int ms){
     digitalWrite(beeper, HIGH);
     delay(ms *1000);
     digitalWrite(beeper, LOW);
+  }
+}
+
+void triggerValves(String type){
+  for(int i = 0; i < numberOfSensors; i++){
+    if(type == "open") digitalWrite(valves[i], HIGH);
+    else digitalWrite(valves[i], LOW);
+    delay(50);
   }
 }

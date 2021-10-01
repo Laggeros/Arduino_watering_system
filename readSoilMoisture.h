@@ -32,4 +32,5 @@ int readSoilMoisture(int sensor){
 
   return percentSensorValue;
   sensorValue = 0;
+  delay(50);
 }

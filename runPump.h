@@ -19,8 +19,10 @@ void runPump(int pump, int time){
     lcd.print(".");
     delay(runTime);
     digitalWrite(pump, HIGH);
+    delay(50);
     lcd.setCursor(0,1);
     lcd.print("           ");
     delay(50);
   }
+  else delay(2000);
 }
