@@ -5,10 +5,13 @@ int sensorValue;
 int percentSensorValue;
 
 int readSoilMoisture(int sensor){
-  for (int j = 0; j < 10; j++) {  //Averaging 10 readings to reduce error possibility
+  //Averaging 10 readings to reduce error possibility
+  
+  for (int j = 0; j < 10; j++) {  
     sensorValue = sensorValue + analogRead(sensors[sensor]); 
     delay(5); 
   }
+  
   sensorValue = sensorValue/10; 
   Serial.print("Sensor analog value: ");
   Serial.println(sensorValue);

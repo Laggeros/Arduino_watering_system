@@ -40,16 +40,13 @@ const int timeToRunThePump = 1.5;
 const int moistureIncrement = 5;
 
 #include <LiquidCrystal_I2C.h>
-//Size of LCD screen
-LiquidCrystal_I2C lcd(0x27,16,2);
+LiquidCrystal_I2C lcd(0x27,16,2); //Size of LCD screen
 
 #define outputPump 5
 #define beeper 6
-//Digital inputs for encoder
-#define inputCLK 2 
-#define inputDT 3
-//Digital input for button
-#define inputBT 4 
+#define inputCLK 2 //Digital inputs for encoder
+#define inputDT 3 //
+#define inputBT 4 //Digital input for button
 
 //End of settings
 
@@ -75,9 +72,9 @@ void setup(){
   pinMode (inputCLK,INPUT);
   pinMode (inputDT,INPUT);
   pinMode (inputBT, INPUT_PULLUP);
+  pinMode (beeper, OUTPUT);
   pinMode (outputPump, OUTPUT);
   digitalWrite(outputPump, HIGH);
-  pinMode (beeper, OUTPUT);
 
   previousStateCLK = digitalRead(inputCLK);
   
@@ -106,6 +103,8 @@ void setup(){
   lcd.setCursor(6,1);
   lcd.print(moistureLevel); lcd.print("%");
   counter = 50; //Default moisture level
+
+  //Moisture selection 
   
   while(moistureSelected == false){
     int previousCounter = counter;
@@ -118,11 +117,11 @@ void setup(){
       lcd.setCursor(6,1);
       lcd.print(counter);lcd.print("%");
     }
-    if(millis() > 300000){
+    if(millis() > 300000){ //Reset the machine if idle for 5 minutes
       beep(0.5);
       beep(0.5);
       beep(0.5);
-      resetFunc(); //Reset the machine if idle for 5 minutes
+      resetFunc(); 
     }
   }
   
@@ -135,6 +134,8 @@ void setup(){
   lcd.setCursor(9,1);
   lcd.print(checkInterval); lcd.print("h");
   counter = 1; //Default interval
+
+  //Time interval selection 
   
   while(intervalSelected == false){
     int previousInterval = counter;
@@ -174,6 +175,9 @@ void loop() {
     beep(0.5);
     delay(3600000);
   }
+
+  //Moisture reading of all the sensors
+  
   else{
     for(int i = 1; i <= numberOfSensors; i++){
       moistureSensor = readSoilMoisture(i);
