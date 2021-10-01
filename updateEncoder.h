@@ -1,6 +1,3 @@
-#define inputCLK 2
-#define inputDT 3
-
 int currentStateCLK;
 int previousStateCLK;
 int counter; 

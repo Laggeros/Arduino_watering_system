@@ -14,6 +14,9 @@
  *  1. Select number of sensors in your project (max is 7 for arduino nano).
  *  2. Select time to run your pump (depends on the lenght of the hose).
  *  3. Calibrate moinsture sensors in convertToPercent file. 
+ *  4. Select analog inputs for sensors in readSoilMoisture file. 
+ *  5. Select digital outputs for valves in triggerValve file. 
+ *  6. Change digital inputs for encoder and button if needed in settings of this file. 
  *  
  *  WARNING: The code is witten for LOW triggered relay boards.  
  *  
@@ -21,10 +24,15 @@
  *  
  *   
  *  Author: Michał Warchoł
+ *  https://github.com/Laggeros
+ *  lagger.exe@gmail.com
+ *  
+ *  Created on: Aug 6, 2021
  */
 
- //Settings
-const bool debug = false;
+//Settings
+
+const bool debug = false; //Turns off moisture and interval selection and sets cycle time to 3 sec. 
 const bool beeperOn = true;
 const bool pumpOn = true;
 const int numberOfSensors = 4;
@@ -32,15 +40,23 @@ const int timeToRunThePump = 1.5;
 const int moistureIncrement = 5;
 
 #include <LiquidCrystal_I2C.h>
+//Size of LCD screen
 LiquidCrystal_I2C lcd(0x27,16,2);
+
+#define outputPump 5
+#define beeper 6
+//Digital inputs for encoder
+#define inputCLK 2 
+#define inputDT 3
+//Digital input for button
+#define inputBT 4 
+
+//End of settings
 
 #include "readSoilMoisture.h"
 #include "select.h";
 #include "runPump.h";
 #include "triggerValve.h";
-
-#define outputPump 5
-#define beeper 6
 
 int error = 0;
 int moistureSensor;
@@ -164,7 +180,7 @@ void loop() {
 
       //This section checks if sensor readout is not lover that a reading from 1h ago
       
-      if(moistureSensor < lastMoistureSensor[i] && checkInterval == 1 && debug == false){
+      if(moistureSensor < lastMoistureSensor[i-1] && checkInterval == 1 && debug == false){
         Serial.println("Check wiring or tube!");
         lcd.clear();
         lcd.setCursor(0,0);
@@ -175,7 +191,7 @@ void loop() {
         beep(0.5);
         beep(0.5);
         error = 1;
-        lastMoistureSensor[i] = 0;
+        lastMoistureSensor[i-1] = 0;
       }
     else{
       if(moistureSensor < moistureLevel){
@@ -197,8 +213,8 @@ void loop() {
   lcd.print("Idle...");
   delay(2000);
   lcd.setBacklight(LOW);
-  //delay(checkInterval * 3600000); 
-  delay(3000);
+  if(debug == false) delay(checkInterval * 3600000); 
+  else delay(3000);
   }
 }
 

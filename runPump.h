@@ -1,3 +1,8 @@
+/*
+ * Function that runs the pump for desired time. 
+ * In case of malfunction try to change LOW to HIGH or reverse.
+ */
+
 void runPump(int pump, int time){
   if(pumpOn == true){
     int runTime = ((time*1000)/4);

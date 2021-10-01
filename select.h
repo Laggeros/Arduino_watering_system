@@ -1,9 +1,5 @@
 #include "updateEncoder.h";
 
-#define inputCLK 2
-#define inputDT 3
-#define inputBT 4
-
 unsigned long lastButtonPress = 0;
 int moistureLevel = 50;
 int checkInterval = 1;

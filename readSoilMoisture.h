@@ -1,13 +1,13 @@
 #include "convertToPercent.h"
 
-int sensors[6] = {A0, A1, A2, A3, A6, A7};
+int sensors[6] = {A0, A1, A2, A3, A6, A7}; //Analog inputs on board
 int sensorValue; 
 int percentSensorValue;
 
 int readSoilMoisture(int sensor){
   for (int j = 0; j < 10; j++) {  //Averaging 10 readings to reduce error possibility
     sensorValue = sensorValue + analogRead(sensors[sensor]); 
-    delay(3); 
+    delay(5); 
   }
   sensorValue = sensorValue/10; 
   Serial.print("Sensor analog value: ");
