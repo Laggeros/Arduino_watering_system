@@ -1,4 +1,4 @@
-# Arduno_watering_system
+# Arduno watering system
 
 Moisture sensor for one plant with watering system
 
@@ -12,3 +12,4 @@ Parts:
 7. Water pump
 8. 12v - 5v Step-down circuit
 9. Relay board
+10. Valves
