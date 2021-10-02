@@ -34,11 +34,11 @@
 
 //Settings
 
-const bool debug = false; //Turns off moisture and interval selection and sets cycle time to 3 sec. 
+const bool debug = true; //Turns off moisture, pots and interval selection and sets cycle time to 3 sec. 
 const bool beeperOn = true;
 const bool pumpOn = true;
-const bool valvesNC = false;
-const int numberOfSensors = 4;
+const bool valvesNC = false; 
+const int numberOfSensors = 3;
 const int timeToRunThePump = 2;
 const int moistureIncrement = 5;
 
@@ -100,6 +100,32 @@ void setup(){
   lcd.print(".");
   delay(500);
 
+  //Pots number selection
+
+  Serial.println("Select number of pots:");
+  lcd.clear();
+  lcd.print("Select pots:");
+  lcd.setCursor(0,1);
+  lcd.print("pots: ");
+  lcd.setCursor(5,1);
+  lcd.print(potNumber);
+  counter = 4; //Default moisture level
+
+  while(potsSelected == false){
+    int previousCounter = counter;
+    select("pots");
+    if(counter != previousCounter){
+      lcd.setCursor(5,1);
+      lcd.print(counter);
+    }
+    if(millis() > 300000){ //Reset the machine if idle for 5 minutes
+      beep(0.5);
+      beep(0.5);
+      beep(0.5);
+      resetFunc(); 
+    } 
+  }
+
   Serial.println("Select moisture level:");
   lcd.clear();
   lcd.print("Select moisture");
@@ -121,12 +147,6 @@ void setup(){
       lcd.print(" ");
       lcd.setCursor(6,1);
       lcd.print(counter);lcd.print("%");
-    }
-    if(millis() > 300000){ //Reset the machine if idle for 5 minutes
-      beep(0.5);
-      beep(0.5);
-      beep(0.5);
-      resetFunc(); 
     }
   }
   
@@ -189,7 +209,7 @@ void loop() {
   //Moisture reading of all the sensors
   
   else{
-    for(int i = 1; i <= numberOfSensors; i++){
+    for(int i = 1; i <= potNumber; i++){
       moistureSensor = readSoilMoisture(i);
 
       //This section checks if sensor readout is not lover that a reading from 1h ago
@@ -207,17 +227,18 @@ void loop() {
         error = 1;
         lastMoistureSensor[i-1] = 0;
       }
-    else{
-      if(moistureSensor < moistureLevel || debug == true){
-        if(numberOfSensors > 1){
-          triggerValve(i, true);
-          runPump(outputPump, timeToRunThePump);
-          triggerValve(i, false);
+      else{
+        delay(3000);
+        if(moistureSensor < moistureLevel || debug == true){
+          if(numberOfSensors > 1){
+            triggerValve(i, true);
+            runPump(outputPump, timeToRunThePump);
+            triggerValve(i, false);
+          }
+          else runPump(outputPump, timeToRunThePump);
+          delay(1000);
         }
-        else runPump(outputPump, timeToRunThePump);
-        delay(1000);
       }
-    }
     delay(100);
   }
   

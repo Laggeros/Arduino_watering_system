@@ -37,3 +37,21 @@ void updateEncoderInterval(){
    previousStateCLK = currentStateCLK; 
    delay(5);
 }
+
+void updateEncoderPots(){
+  currentStateCLK = digitalRead(inputCLK);
+  if (currentStateCLK != previousStateCLK && currentStateCLK == 1){ 
+     if (digitalRead(inputDT) != currentStateCLK) { 
+      counter --;
+     } 
+     else {
+      counter ++;
+     }
+     if(counter > 3){counter = 4;}
+     if(counter < 1) {counter = 1;} 
+     Serial.print(counter);
+     Serial.println("pots");
+   } 
+   previousStateCLK = currentStateCLK; 
+   delay(5);
+}

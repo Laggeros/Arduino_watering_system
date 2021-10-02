@@ -3,18 +3,21 @@
 unsigned long lastButtonPress = 0;
 int moistureLevel = 50;
 int checkInterval = 1;
+int potNumber = 4;
 bool moistureSelected;
 bool intervalSelected;
-
+bool potsSelected;
 
 void select(String type){
   if(debug == true){
     moistureSelected = true;
     intervalSelected = true;
+    potsSelected = true;
   }
   else{
     moistureSelected = false;
     intervalSelected = false;
+    potsSelected = false;
   }
 
   int btnState = digitalRead(inputBT);
@@ -37,6 +40,18 @@ void select(String type){
       if (millis() - lastButtonPress > 50) {
         checkInterval = counter;
         intervalSelected = true;
+        Serial.println("Button pressed!");
+      }
+      lastButtonPress = millis();
+    }
+  }
+  else if(type == "pots"){
+      attachInterrupt(digitalPinToInterrupt(inputCLK), updateEncoderPots, CHANGE);
+      attachInterrupt(digitalPinToInterrupt(inputDT), updateEncoderPots, CHANGE);
+    if (btnState == LOW) {
+      if (millis() - lastButtonPress > 50) {
+        checkInterval = counter;
+        potsSelected = true;
         Serial.println("Button pressed!");
       }
       lastButtonPress = millis();
